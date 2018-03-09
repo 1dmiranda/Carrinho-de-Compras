@@ -1,0 +1,11 @@
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\bin\Debug\netcoreapp2.0\TesteEmprego.deps.json
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\bin\Debug\netcoreapp2.0\TesteEmprego.runtimeconfig.json
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\bin\Debug\netcoreapp2.0\TesteEmprego.runtimeconfig.dev.json
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\bin\Debug\netcoreapp2.0\TesteEmprego.dll
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\obj\Debug\netcoreapp2.0\TesteEmprego.csprojResolveAssemblyReference.cache
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\obj\Debug\netcoreapp2.0\TesteEmprego.csproj.CoreCompileInputs.cache
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\obj\Debug\netcoreapp2.0\TesteEmprego.AssemblyInfoInputs.cache
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\obj\Debug\netcoreapp2.0\TesteEmprego.AssemblyInfo.cs
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\bin\Debug\netcoreapp2.0\TesteEmprego.pdb
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\obj\Debug\netcoreapp2.0\TesteEmprego.dll
+C:\Users\Lab\source\repos\TesteEmprego\TesteEmprego\obj\Debug\netcoreapp2.0\TesteEmprego.pdb
