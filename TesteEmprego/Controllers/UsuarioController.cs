@@ -2,145 +2,152 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TesteEmprego.Data;
+using TesteEmprego.Models;
 
 namespace TesteEmprego.Controllers
 {
-    public class UsuarioController : Controller
+    public class UsuariosController : Controller
     {
         private readonly BDContext _context;
 
-        // GET: Usuario
-        public async Task<ActionResult> Index()
+        public UsuariosController(BDContext context)
         {
-            return View(await _context.Usuario.ToListAsync());
+            _context = context;
         }
 
-        // GET: Usuario/Details/5
+        // GET: Usuarios
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Usuarios.ToListAsync());
+        }
+
+        // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if(id==null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario.SingleOrDefaultAsync(m => m.UsuarioId == id);
+            var usuario = await _context.Usuarios
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {
                 return NotFound();
             }
+
             return View(usuario);
         }
 
-        // GET: Usuario/Create
-        public ActionResult Create()
+        // GET: Usuarios/Create
+        public IActionResult Create()
         {
             return View();
         }
-        // POST: Usuario/Create
+
+        // POST: Usuarios/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Cpf")] Usuario usuario)
         {
-            try
+            if (ModelState.IsValid)
             {
-                listaDeUsuarios.Add(usuario);
-                return RedirectToAction(nameof(IndexAsync));
+                _context.Add(usuario);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-
-            }
+            return View(usuario);
         }
 
-        // GET: Usuario/Edit/5
-        public ActionResult Edit(int? id)
+        // GET: Usuarios/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var usuario = listaDeUsuarios.FirstOrDefault(m => m.Id == id);
+            var usuario = await _context.Usuarios.SingleOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {
                 return NotFound();
             }
             return View(usuario);
         }
-        // POST: Usuario/Edit/5
+
+        // POST: Usuarios/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, [Bind("Id, Nome, Cpf, email")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Cpf")] Usuario usuario)
         {
-            try
+            if (id != usuario.Id)
             {
-                if (id != usuario.Id)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
 
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    //Atualizar produto encontrado na lista
-                    var usuarioTemp = listaDeUsuarios.FirstOrDefault(c => c.Id == id);
-                    if (usuarioTemp != null)
-                    {
-                        usuarioTemp.Cpf = usuario.Cpf;
-                        usuarioTemp.Nome = usuario.Nome;
-                        usuarioTemp.email = usuario.email;
-                    }
-                    else
+                    _context.Update(usuario);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UsuarioExists(usuario.Id))
                     {
                         return NotFound();
                     }
+                    else
+                    {
+                        throw;
+                    }
                 }
-
-                return RedirectToAction(nameof(IndexAsync));
+                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(usuario);
         }
-        // GET: Usuario/Delete/5
-        public ActionResult Delete(int? id)
+
+        // GET: Usuarios/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var usuario = listaDeUsuarios.FirstOrDefault(m => m.Id == id);
+            var usuario = await _context.Usuarios
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {
                 return NotFound();
             }
+
             return View(usuario);
         }
 
-        // POST: Usuario/Delete/5
-        [HttpPost]
+        // POST: Usuarios/Delete/5
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
-                var usuario
-                    = listaDeUsuarios.FirstOrDefault(m => m.Id == id);
-                listaDeUsuarios.Remove(usuario);
+            var usuario = await _context.Usuarios.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Usuarios.Remove(usuario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-                return RedirectToAction(nameof(IndexAsync));
-            }
-            catch
-            {
-                return View();
-            }
+        private bool UsuarioExists(int id)
+        {
+            return _context.Usuarios.Any(e => e.Id == id);
         }
     }
 }
