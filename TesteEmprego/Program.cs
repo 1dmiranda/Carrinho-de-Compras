@@ -24,7 +24,7 @@ namespace TesteEmprego
                 try
                 {
                     var context = services.GetRequiredService<BDContext>();
-                    BDInitializer.Initialize(context);
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

@@ -10,22 +10,23 @@ using TesteEmprego.Models;
 
 namespace TesteEmprego.Controllers
 {
-    public class UsuarioController : Controller
+    public class PedidoItemController : Controller
     {
         private readonly BDContext _context;
 
-        public UsuarioController(BDContext context)
+        public PedidoItemController(BDContext context)
         {
             _context = context;
         }
 
-        // GET: Usuario
+        // GET: PedidoItem
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuarios.ToListAsync());
+            var bDContext = _context.PedidosItens.Include(p => p.Pedido).Include(p => p.Produto);
+            return View(await bDContext.ToListAsync());
         }
 
-        // GET: Usuario/Details/5
+        // GET: PedidoItem/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,45 @@ namespace TesteEmprego.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            var pedidoItem = await _context.PedidosItens
+                .Include(p => p.Pedido)
+                .Include(p => p.Produto)
+                .SingleOrDefaultAsync(m => m.PedidoId == id);
+            if (pedidoItem == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(pedidoItem);
         }
 
-        // GET: Usuario/Create
+        // GET: PedidoItem/Create
         public IActionResult Create()
         {
+            ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id");
+            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Id");
             return View();
         }
 
-        // POST: Usuario/Create
+        // POST: PedidoItem/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Cpf")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("ProdutoId,PedidoId")] PedidoItem pedidoItem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
+                _context.Add(pedidoItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id", pedidoItem.PedidoId);
+            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Id", pedidoItem.ProdutoId);
+            return View(pedidoItem);
         }
 
-        // GET: Usuario/Edit/5
+        // GET: PedidoItem/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +80,24 @@ namespace TesteEmprego.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.SingleOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            var pedidoItem = await _context.PedidosItens.SingleOrDefaultAsync(m => m.PedidoId == id);
+            if (pedidoItem == null)
             {
                 return NotFound();
             }
-            return View(usuario);
+            ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id", pedidoItem.PedidoId);
+            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Id", pedidoItem.ProdutoId);
+            return View(pedidoItem);
         }
 
-        // POST: Usuario/Edit/5
+        // POST: PedidoItem/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Cpf")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("ProdutoId,PedidoId")] PedidoItem pedidoItem)
         {
-            if (id != usuario.Id)
+            if (id != pedidoItem.PedidoId)
             {
                 return NotFound();
             }
@@ -97,12 +106,12 @@ namespace TesteEmprego.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
+                    _context.Update(pedidoItem);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.Id))
+                    if (!PedidoItemExists(pedidoItem.PedidoId))
                     {
                         return NotFound();
                     }
@@ -113,10 +122,12 @@ namespace TesteEmprego.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id", pedidoItem.PedidoId);
+            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Id", pedidoItem.ProdutoId);
+            return View(pedidoItem);
         }
 
-        // GET: Usuario/Delete/5
+        // GET: PedidoItem/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +135,32 @@ namespace TesteEmprego.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            var pedidoItem = await _context.PedidosItens
+                .Include(p => p.Pedido)
+                .Include(p => p.Produto)
+                .SingleOrDefaultAsync(m => m.PedidoId == id);
+            if (pedidoItem == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(pedidoItem);
         }
 
-        // POST: Usuario/Delete/5
+        // POST: PedidoItem/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuario = await _context.Usuarios.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Usuarios.Remove(usuario);
+            var pedidoItem = await _context.PedidosItens.SingleOrDefaultAsync(m => m.PedidoId == id);
+            _context.PedidosItens.Remove(pedidoItem);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioExists(int id)
+        private bool PedidoItemExists(int id)
         {
-            return _context.Usuarios.Any(e => e.Id == id);
+            return _context.PedidosItens.Any(e => e.PedidoId == id);
         }
     }
 }

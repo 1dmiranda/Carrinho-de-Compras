@@ -13132,11 +13132,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lab\\source\\repos\\TesteEmprego\\TesteEmprego\\TesteEmprego.csproj",
+      "projectUniqueName": "C:\\Users\\Lab\\Source\\Repos\\TesteEmprego\\TesteEmprego\\TesteEmprego.csproj",
       "projectName": "TesteEmprego",
-      "projectPath": "C:\\Users\\Lab\\source\\repos\\TesteEmprego\\TesteEmprego\\TesteEmprego.csproj",
+      "projectPath": "C:\\Users\\Lab\\Source\\Repos\\TesteEmprego\\TesteEmprego\\TesteEmprego.csproj",
       "packagesPath": "C:\\Users\\Lab\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lab\\source\\repos\\TesteEmprego\\TesteEmprego\\obj\\",
+      "outputPath": "C:\\Users\\Lab\\Source\\Repos\\TesteEmprego\\TesteEmprego\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
