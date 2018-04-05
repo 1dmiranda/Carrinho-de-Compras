@@ -22,10 +22,11 @@ namespace TesteEmprego.Data
             context.Usuarios.Add(usuario);
             context.SaveChanges();
 
+            var produto4 = new Produto { Nome = "produto4", Preco = 1000 };
             var produto1 = new Produto { Nome = "produto1", Preco = 1000 };
             var produto2 = new Produto { Nome = "produto2", Preco = 2000 };
             var produto3 = new Produto { Nome = "produto3", Preco = 3000 };
-            var produtos = new[] { produto1, produto2, produto3 };
+            var produtos = new[] { produto1, produto2, produto3, produto4 };
             context.Produtos.AddRange(produtos);
             context.SaveChanges();
 

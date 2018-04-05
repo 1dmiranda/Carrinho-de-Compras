@@ -105,9 +105,8 @@ namespace TesteEmprego.Controllers
     // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Data,UsuarioId")] Pedido pedido)
+        public async Task<IActionResult> Edit(Pedido pedido)
         {
-
             if (ModelState.IsValid)
             {
                 try
