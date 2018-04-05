@@ -1,21 +1,23 @@
 ﻿@model TesteEmprego.Models.PedidoItem
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Adicionar ao Carrinho";
 }
 
-<h2>Edit</h2>
+<h2>AddToCart</h2>
 
 <h4>PedidoItem</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="AddToCart">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ProdutoId" />
-            <input type="hidden" asp-for="PedidoId" />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <label asp-for="Produto" class="control-label"></label>
+                @Html.EditorFor(p => p.Produto.Nome)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>

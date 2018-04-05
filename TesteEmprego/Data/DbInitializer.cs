@@ -22,9 +22,9 @@ namespace TesteEmprego.Data
             context.Usuarios.Add(usuario);
             context.SaveChanges();
 
-            var produto1 = new Produto { Nome = "produto1", PrecoUnitario = 1000 };
-            var produto2 = new Produto { Nome = "produto2", PrecoUnitario = 2000 };
-            var produto3 = new Produto { Nome = "produto3", PrecoUnitario = 3000 };
+            var produto1 = new Produto { Nome = "produto1", Preco = 1000 };
+            var produto2 = new Produto { Nome = "produto2", Preco = 2000 };
+            var produto3 = new Produto { Nome = "produto3", Preco = 3000 };
             var produtos = new[] { produto1, produto2, produto3 };
             context.Produtos.AddRange(produtos);
             context.SaveChanges();
@@ -39,7 +39,7 @@ namespace TesteEmprego.Data
             foreach (var prod in produtosComprados)
             {
                 var pedidoItem = new PedidoItem { PedidoId = pedido.Id, ProdutoId = prod.Id };
-                context.PedidosItens.Add(pedidoItem);
+                context.Itens.Add(pedidoItem);
                 context.SaveChanges();
             }
 

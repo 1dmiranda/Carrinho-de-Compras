@@ -22,7 +22,7 @@ namespace TesteEmprego.Controllers
         // GET: Pedido
         public async Task<IActionResult> Index()
         {
-            var bDContext = _context.Pedidos.Include(p => p.Usuario);
+            var bDContext = _context.Pedidos.Include(p => p.Usuario).Include(p => p.Itens).Include("Itens.Produto");
             return View(await bDContext.ToListAsync());
         }
 
@@ -45,7 +45,7 @@ namespace TesteEmprego.Controllers
             return View(pedido);
         }
 
-        // GET: Pedido/Create
+        /*// GET: Pedido/Create
         public IActionResult Create()
         {
             ViewData["Usuarios"] = new SelectList(_context.Usuarios, "Id", "Nome");
@@ -80,7 +80,7 @@ namespace TesteEmprego.Controllers
                 _context.SaveChanges();
             }
             return RedirectToAction(nameof(Index));
-        }
+        }*/
     
         // GET: Pedido/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -107,10 +107,6 @@ namespace TesteEmprego.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Data,UsuarioId")] Pedido pedido)
         {
-            if (id != pedido.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -170,5 +166,61 @@ namespace TesteEmprego.Controllers
         {
             return _context.Pedidos.Any(e => e.Id == id);
         }
+
+        public IActionResult SelecionarProduto(int? id)
+        {
+            var produtos = _context.Produtos.ToList();
+            ViewBag.PedidoId = id;
+            return View(produtos);
+        }
+
+        [HttpGet]
+        public IActionResult AddToCart(int id, int? pedidoId)
+        {
+            var produto = _context.Produtos.Find(id);
+            var pedido = pedidoId.HasValue ?
+
+                _context.Pedidos.Include(p => p.Itens).First(p => p.Id == pedidoId.Value) :
+
+                new Pedido()
+                {
+                    Itens = new List<PedidoItem>()
+                };
+
+            pedido.Itens.Add(new PedidoItem { ProdutoId = id });
+
+            if (pedidoId.HasValue)
+                _context.Update(produto);
+            else
+                _context.Add(pedido);
+
+            _context.SaveChanges();
+            ViewBag.PedidoId = pedido.Id;
+            return RedirectToAction("Carrinho", new { pedidoId = pedido?.Id });
+        }
+
+        [HttpGet("[controller]/[action]/{pedidoId}")]
+        public IActionResult Carrinho(int pedidoId)
+        {
+            var pedido = _context.Pedidos
+                .Include(p => p.Itens)
+                .Include("Itens.Produto")
+                .First(p => p.Id == pedidoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Nome");
+            return View(pedido);
+        }
+
+        /*[HttpGet("RelatorioMensal")]
+        public IActionResult Relatorio()
+        {
+            var pedidos = _context.Pedidos
+                .Include(p => p.Itens)
+                .Include("Itens.Produto")
+                .Include(u => u.Usuario)
+                .Where(d => d.Data.Month == DateTime.Today.Month)
+                .ToList();
+
+            var relatorio = new RelatorioViewModel(pedidos);
+        }*/
     }
 }

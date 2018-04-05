@@ -15,7 +15,7 @@ namespace TesteEmprego.Data
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
-        public DbSet<PedidoItem> PedidosItens { get; set; }
+        public DbSet<PedidoItem> Itens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
