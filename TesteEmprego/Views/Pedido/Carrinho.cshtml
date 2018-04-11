@@ -26,7 +26,6 @@
                 <tr>
                     <td data-th="Product">
                         <div class="row">
-                            <div class="col-sm-2 hidden-xs"><img src="http://placehold.it/100x100" alt="..." class="img-responsive" /></div>
                             <div class="col-sm-10">
                                 <h4 class="nomargin">@item.Produto.Nome</h4>
                                 <p>@item.Produto.Categoria</p>
@@ -43,7 +42,7 @@
                 <td class="text-center"><strong>Total 1.99</strong></td>
             </tr>
             <tr>
-                <td><a asp-action="SelecionarProduto" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+                <td><a asp-action="SelecionarProduto" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fa fa-angle-left"></i> Continuar no Shopping</a></td>
                 <td class="hidden-xs"></td>
                 <td class="hidden-xs text-center"><strong>Total @string.Format("{0:C}", Model.Itens.Sum(i => i.Produto.Preco))</strong></td>
             </tr>
@@ -69,15 +68,12 @@
                     <span asp-validation-for="Data" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" asp-action="Edit" asp-controller="Pedido" value="Confirmar" class="btn btn-default" />
+                    <input type="submit" asp-action="Edit" asp-controller="Pedido" value="Confirmar" class="btn btn-success" />
+                    <a asp-action="Index" class="btn btn-default">Voltar</a>
                 </div>
             </form>
         </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Voltar para Pedidos</a>
 </div>
 
 @section Scripts {
